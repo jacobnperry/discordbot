@@ -1,19 +1,43 @@
 
 const Discord = require('discord.js');
+const config = require('./config.json');
  const client = new Discord.Client();
- let players = ['Jacob ', 'Val', 'Chris'];
- let boardGames = ['Gloomhaven', 'Scythe',]
+ let boardGames = ['Gloomhaven', 'Scythe',];
+ let max = 3;
+ let min = 0;
 
-client.on('ready', () => {
- console.log(`${client.user.tag}! has come to life!`);
- });
 
-client.on('message', msg => {
- if (msg.content === '!edit') {
-     console.log('What would you like to edit');
-     console.log('Players','Board Games','Computer Games')
- msg.reply('pong');
+
+
+client.on('message', message => {
+if (!message.content.startsWith(config.prefix) || message.author.bot) return;
+
+const args = message.content.slice(config.prefix.length).split(' ');
+const command = args.shift().toLowerCase();
+
+ if (command === 'edit') {
+     message.channel.send(`What do you want to edit?`);
+     //message.reply('What would you like to edit\n add players, Board Games, or Computer Games?');
+
  }
- });
+if (command === 'add') {
 
-client.login('NzE1MzQ3Njc0NTY3NjcxODU5.XtA7OQ.Bz1t9oeMR2qj7Lgvxc17ZD3rlIQ');
+            message.reply(`Who would you like to add to the player list?`);
+
+            players.push(message.content);
+        }
+if (command === 'gametator') {
+        var number = Math.floor(Math.random() * (max - min) ) + min;
+        var newGametator = players[number];
+    message.reply(`This weeks's gametator is ${newGametator}`);
+
+    }
+
+if (command === 'players') {
+    message.channel.send(`Who do you want to add?`);
+}
+}
+)
+;
+
+client.login(config.token);
